@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/jquery-1.11.0.min.js}"></script>
+</head>
+<body style="border: red solid 1px;">
+<form id="form" style="padding-left: 100px;padding-top: 50px">
+    试卷导入<input type="file" name="file">
+<!--    音频前缀：<input type="input" name="audioPrefix">-->
+    对应tlst_course_type的id(自行分类)：<input type="input" name="courseType">
+    <!--<button>导出</button>-->
+    <input type="button" onclick="importUser()" value="导入">
+    <input type="button" onclick="exportExcel()" value="导出">
+    <div id="result"></div>
+</form>
+<br>
+<br>
+<br>
+<br>
+
+</body>
+<script th:inline="javascript">
+    var path = [[${#request.getContextPath()}]]; //获取路径
+    function importUser() {
+        var url = path + "/importExcel";
+        var formData = new FormData($("#form")[0]);
+        $.ajax({
+            //接口地址
+            url: url,
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                $("#result").text(data)
+                // if (data > 0) {
+                //     alert("导入成功");
+                // } else {
+                //     alert("导入失败");
+                // }
+            }
+            // error: function (returndata) {
+            //     alert("网络异常")
+            // }
+        });
+    }
+
+    function exportExcel() {
+        var url = path + "/exportExcel";
+        window.location.href=url;
+    }
+</script>
+</html>

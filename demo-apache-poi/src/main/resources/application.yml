@@ -1,0 +1,72 @@
+
+spring:
+  mvc:
+    servlet:
+      load-on-startup: 1
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML5
+    cache: false
+    servlet:
+      content-type: text/html
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+  datasource:
+    url: jdbc:mysql://localhost:3306/ebox?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    # 阿里 druid 数据源配置
+    druid:
+      initial-size: 10
+      min-idle: 10
+      max-active: 30
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 1800000 #最小空闲时间
+      max-evictable-idle-time-millis: 3600000 #最大空闲时间
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat,wall,slf4j
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      validation-query-timeout: 10000
+      web-stat-filter: # WebStatFilter配置，说明请参考Druid Wiki，配置_配置WebStatFilter
+        enabled: true #是否启用StatFilter默认值true
+        url-pattern: /*
+        exclusions: /druid/*,*.js,*.gif,*.jpg,*.png,*.css,*.ico
+        session-stat-enable: true #开启session统计
+        #session-stat-max-count: 1000
+        #principal-session-name:
+        #principal-cookie-name:
+        profile-enable: true # 监控单个url调用的sql列表
+      stat-view-servlet:  # StatViewServlet配置(统计界面)，说明请参考Druid Wiki，配置_StatViewServlet配置
+        enabled: true #是否启用StatViewServlet默认值true
+        url-pattern: /druid/*
+        reset-enable: true
+server:
+  port: 8080
+
+
+
+#################### mybatis配置 #############################
+mybatis:
+  # 实体类所在包
+  #type-aliases-package: com.jzcreate.ebox.word.domain.*
+  # dao xml文件所在包
+  #mapper-locations: classpath:mybatis-mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true #开启驼峰映射
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+pagehelper:
+  reasonable: true
+  helper-dialect: mysql
+  support-methods-arguments: true
+  params: count=countSql
